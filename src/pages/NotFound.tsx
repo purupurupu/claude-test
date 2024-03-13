@@ -10,10 +10,10 @@ export default function NotFound() {
           The page you are looking for might have been removed, had its name
           changed, or is temporarily unavailable.
         </p>
-        <Link href="/">
-          <a className="text-blue-500 hover:underline">
+        <Link href="/" className="text-blue-500 hover:underline">
+          
             Go back to the homepage
-          </a>
+          
         </Link>
       </div>
     </Layout>
