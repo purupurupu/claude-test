@@ -26,21 +26,21 @@ export default function Input({
         <select
           {...register(name, { required: props.required })}
           id={name}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
           {...props}
         />
       ) : props.as === "textarea" ? (
         <textarea
           {...register(name, { required: props.required })}
           id={name}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
           {...props}
         />
       ) : (
         <input
           {...register(name, { required: props.required })}
           id={name}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
           {...props}
         />
       )}
