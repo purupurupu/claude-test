@@ -2,10 +2,11 @@ import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
 import RegistrationForm from "../components/RegistrationForm";
 import { useAuth } from "@/hooks/useAuth";
+import { register } from "@/lib/api";
 
 export default function Registration() {
   const router = useRouter();
-  const { register } = useAuth();
+  // const { register } = useAuth();
 
   async function handleRegistration(data: {
     name: string;
