@@ -1,13 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "@/types";
-import {
-  login,
-  register,
-  logout,
-  getProfile,
-  updateProfile,
-  updatePassword,
-} from "../lib/api";
+import * as api from "@/lib/api";
 
 type AuthContextType = {
   user: User | null;
@@ -56,7 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function loadUserFromLocalStorage() {
       const token = localStorage.getItem("token");
       if (token) {
-        const data = await getProfile();
+        const data = await api.getProfile();
         setUser(data);
       }
       setLoading(false);
@@ -68,9 +61,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     email: string;
     password: string;
   }): Promise<string> {
-    const token = await login(data);
+    const token = await api.login(data);
     localStorage.setItem("token", token);
-    const user = await getProfile();
+    const user = await api.getProfile();
     setUser(user);
     return token;
   }
@@ -82,15 +75,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     age: number;
     gender: string;
   }): Promise<string> {
-    const token = await register(data);
+    const token = await api.register(data);
     localStorage.setItem("token", token);
-    const user = await getProfile();
+    const user = await api.getProfile();
     setUser(user);
     return token;
   }
 
   async function logout() {
-    await logout();
+    await api.logout();
     localStorage.removeItem("token");
     setUser(null);
   }
@@ -101,7 +94,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     age: number;
     gender: string;
   }) {
-    const user = await updateProfile(data);
+    const user = await api.updateProfile(data);
     setUser(user);
   }
 
@@ -110,7 +103,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     password: string;
     confirmPassword: string;
   }) {
-    await updatePassword(data);
+    await api.updatePassword(data);
   }
 
   const value = {
