@@ -1,8 +1,18 @@
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
+import Spinner from "./Spinner";
+import Notification from "./Notification";
 
 export default function Header() {
-  const { user, logout } = useAuth();
+  const { user, logout, loading, error } = useAuth();
+
+  async function handleLogout() {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  }
 
   return (
     <header className="bg-white shadow">
@@ -14,6 +24,8 @@ export default function Header() {
             </Link>
           </div>
           <div className="flex items-center">
+            {loading && <Spinner />}
+            {error && <Notification message={error} variant="error" />}
             {user ? (
               <>
                 <Link
@@ -29,7 +41,7 @@ export default function Header() {
                   Settings
                 </Link>
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="text-gray-800 hover:text-gray-600"
                 >
                   Logout

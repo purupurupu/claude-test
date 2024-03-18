@@ -10,7 +10,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<{ email: string; password: string }>();
 
   return (
@@ -31,7 +31,9 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
         errors={errors}
         required
       />
-      <Button type="submit">Login</Button>
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Logging in..." : "Login"}
+      </Button>
     </form>
   );
 }

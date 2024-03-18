@@ -16,7 +16,7 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<{
     name: string;
     email: string;
@@ -71,7 +71,9 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
         <option value="female">Female</option>
         <option value="other">Other</option>
       </Input>
-      <Button type="submit">Register</Button>
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Registering..." : "Register"}
+      </Button>
     </form>
   );
 }

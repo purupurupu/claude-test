@@ -76,8 +76,15 @@ export async function sendMessage(data: {
 }
 
 export async function login(data: { email: string; password: string }) {
-  const response = await api.post<{ token: string }>("/login", data);
-  return response.data.token;
+  try {
+    const response = await api.post<{ token: string }>("/login", data);
+    return response.data.token;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      throw new Error("Invalid email or password");
+    }
+    throw new Error("An unexpected error occurred during login.");
+  }
 }
 
 export async function register(data: {
@@ -87,8 +94,15 @@ export async function register(data: {
   age: number;
   gender: string;
 }) {
-  const response = await api.post<{ token: string }>("/users", data);
-  return response.data.token;
+  try {
+    const response = await api.post<{ token: string }>("/users", data);
+    return response.data.token;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 400) {
+      throw new Error("Invalid registration data");
+    }
+    throw new Error("An unexpected error occurred during registration.");
+  }
 }
 
 export async function logout() {
@@ -115,5 +129,9 @@ export async function updatePassword(data: {
   password: string;
   confirmPassword: string;
 }) {
-  await api.put("/password", data);
+  try {
+    await api.put("/password", data);
+  } catch (error) {
+    throw new Error("An unexpected error occurred while updating password.");
+  }
 }
