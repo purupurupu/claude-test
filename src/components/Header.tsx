@@ -56,7 +56,7 @@ export default function Header() {
                   Login
                 </Link>
                 <Link
-                  href="/register"
+                  href="/registration"
                   className="text-gray-800 hover:text-gray-600"
                 >
                   Register
