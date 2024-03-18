@@ -37,7 +37,7 @@ type AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
-  loading: true,
+  loading: false,
   error: "",
   login: async () => {},
   register: async () => {},
