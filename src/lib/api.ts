@@ -87,10 +87,7 @@ export async function register(data: {
   age: number;
   gender: string;
 }) {
-  const response = await api.post<{ token: string }>(
-    "http://localhost:8000/users",
-    data
-  );
+  const response = await api.post<{ token: string }>("/users", data);
   return response.data.token;
 }
 

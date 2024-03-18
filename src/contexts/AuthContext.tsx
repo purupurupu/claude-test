@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "@/types";
-import * as api from "@/lib/api";
+import { getProfile, login, logout, register, updateProfile } from "@/lib/api";
 
 type AuthContextType = {
   user: User | null;
@@ -49,7 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function loadUserFromLocalStorage() {
       const token = localStorage.getItem("token");
       if (token) {
-        const data = await api.getProfile();
+        const data = await getProfile();
         setUser(data);
       }
       setLoading(false);
@@ -57,33 +57,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     loadUserFromLocalStorage();
   }, []);
 
-  async function login(data: {
+  async function loginUser(data: {
     email: string;
     password: string;
   }): Promise<string> {
-    const token = await api.login(data);
+    const token = await login(data);
     localStorage.setItem("token", token);
-    const user = await api.getProfile();
+    const user = await getProfile();
     setUser(user);
     return token;
   }
 
-  async function register(data: {
+  async function registerUser(data: {
     name: string;
     email: string;
     password: string;
     age: number;
     gender: string;
   }): Promise<string> {
-    const token = await api.register(data);
+    const token = await register(data);
     localStorage.setItem("token", token);
-    const user = await api.getProfile();
+    const user = await getProfile();
     setUser(user);
     return token;
   }
 
-  async function logout() {
-    await api.logout();
+  async function logoutUser() {
+    await logout();
     localStorage.removeItem("token");
     setUser(null);
   }
@@ -94,7 +94,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     age: number;
     gender: string;
   }) {
-    const user = await api.updateProfile(data);
+    const user = await updateProfile(data);
     setUser(user);
   }
 
@@ -103,14 +103,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     password: string;
     confirmPassword: string;
   }) {
-    await api.updatePassword(data);
+    await updatePassword(data);
   }
 
   const value = {
     user,
-    login,
-    register,
-    logout,
+    login: loginUser,
+    register: registerUser,
+    logout: logoutUser,
     updateUser,
     updatePassword,
   };
