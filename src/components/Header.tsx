@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import Spinner from "./Spinner";
 import Notification from "./Notification";
+import Router from "next/router";
 
 export default function Header() {
   const { user, logout, loading, error } = useAuth();
@@ -9,6 +10,7 @@ export default function Header() {
   async function handleLogout() {
     try {
       await logout();
+      Router.push("/login");
     } catch (error) {
       console.error("Logout failed:", error);
     }
