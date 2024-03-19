@@ -1,5 +1,6 @@
 import axios from "axios";
 import { User } from "@/types";
+import { jwtDecode } from "jwt-decode";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -8,7 +9,7 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
-    config.headers["Authorization"] = `Bearer ${token}`;
+    config.headers["Authorization"] = token;
   }
   return config;
 });
@@ -74,7 +75,7 @@ export async function sendMessage(data: {
 export async function login(data: { email: string; password: string }) {
   try {
     const response = await api.post<{ token: string }>("/login", data);
-    return response;
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       throw new Error("Invalid email or password");
@@ -91,7 +92,7 @@ export async function register(data: {
   gender: string;
 }) {
   try {
-    const response = await api.post<{ token: string }>("/users", data);
+    const response = await api.post<{ token: string }>("/user", data);
     return response.data.token;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 400) {
@@ -106,8 +107,21 @@ export async function logout() {
 }
 
 export async function getProfile() {
-  const response = await api.get<User>("/profile");
-  return response.data;
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    const decodedToken = jwtDecode(token) as { user_id: string };
+    const userId = decodedToken.user_id;
+
+    const response = await api.get<User>(`/users/${userId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to fetch user profile.");
+  }
 }
 
 export async function updateProfile(data: {
