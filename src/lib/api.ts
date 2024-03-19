@@ -14,25 +14,21 @@ api.interceptors.request.use((config) => {
 });
 
 export async function getUsers() {
-  const response = await api.get<
-    {
-      id: string;
-      name: string;
-      age: number;
-      bio: string;
-      pictures: string[];
-    }[]
-  >("/users");
-  return response.data;
-}
-
-export async function getUser(id: string) {
-  const response = await api.get<{
-    name: string;
-    bio: string;
-    pictures: string[];
-  }>("users/" + id);
-  return response.data;
+  try {
+    const response = await api.get<
+      {
+        id: string;
+        name: string;
+        age: number;
+        bio: string;
+        pictures: string[];
+      }[]
+    >("/users");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    throw error;
+  }
 }
 
 export async function createMatch(data: {
@@ -78,7 +74,7 @@ export async function sendMessage(data: {
 export async function login(data: { email: string; password: string }) {
   try {
     const response = await api.post<{ token: string }>("/login", data);
-    return response.data.token;
+    return response;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       throw new Error("Invalid email or password");

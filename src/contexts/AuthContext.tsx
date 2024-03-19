@@ -76,19 +76,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     email: string;
     password: string;
   }): Promise<void> {
+    setLoading(true);
+    setError("");
+
     try {
-      const token = await apiLogin(data);
+      const response = await apiLogin(data);
+      const token = response.data.token;
       localStorage.setItem("token", token);
       const user = await getProfile();
       setUser(user);
-      setError("");
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
+    } catch (error: any) {
+      if (error.response) {
+        setError(error.response.data);
       } else {
         setError("An unexpected error occurred during login.");
       }
     }
+
+    setLoading(false);
   }
 
   async function register(data: {
@@ -98,31 +103,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     age: number;
     gender: string;
   }): Promise<void> {
+    setLoading(true);
+    setError("");
+
     try {
-      const token = await apiRegister(data);
+      const response = await apiRegister(data);
+      const responseData = JSON.parse(response);
+      const token = responseData.data.token;
       localStorage.setItem("token", token);
       const user = await getProfile();
       setUser(user);
-      setError("");
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
+    } catch (error: any) {
+      if (error.response) {
+        setError(error.response.data);
       } else {
         setError("An unexpected error occurred during registration.");
       }
     }
+
+    setLoading(false);
   }
 
   async function logout() {
+    setLoading(true);
+    setError("");
+
     try {
       await apiLogout();
       localStorage.removeItem("token");
       setUser(null);
-      setError("");
     } catch (error) {
       console.error("Logout failed:", error);
       setError("An unexpected error occurred during logout.");
     }
+
+    setLoading(false);
   }
 
   async function updateUser(data: {
@@ -131,14 +146,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     age: number;
     gender: string;
   }) {
+    setLoading(true);
+    setError("");
+
     try {
       const user = await updateProfile(data);
       setUser(user);
-      setError("");
     } catch (error) {
       console.error("Update user failed:", error);
       setError("An unexpected error occurred while updating user profile.");
     }
+
+    setLoading(false);
   }
 
   async function updatePassword(data: {
@@ -146,13 +165,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     password: string;
     confirmPassword: string;
   }) {
+    setLoading(true);
+    setError("");
+
     try {
       await apiUpdatePassword(data);
-      setError("");
     } catch (error) {
       console.error("Update password failed:", error);
       setError("An unexpected error occurred while updating password.");
     }
+
+    setLoading(false);
   }
 
   const value = {
