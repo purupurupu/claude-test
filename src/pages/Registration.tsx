@@ -24,7 +24,9 @@ export default function Registration() {
 
     try {
       await register(data);
-      router.push("/home");
+      // TODO: Redirect to the home page after registration
+      // backend should return a token
+      router.push("/login");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

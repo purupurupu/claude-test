@@ -92,7 +92,7 @@ export async function register(data: {
   gender: string;
 }) {
   try {
-    const response = await api.post<{ token: string }>("/user", data);
+    const response = await api.post<{ token: string }>("/users", data);
     return response.data.token;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 400) {

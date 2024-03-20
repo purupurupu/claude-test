@@ -86,14 +86,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const user = await getProfile();
       setUser(user);
     } catch (error: any) {
+      let errorMessage = "";
       if (error.response) {
-        setError(error.response.data);
+        errorMessage = error.response.data;
       } else {
-        setError("An unexpected error occurred during login.");
+        errorMessage = "An unexpected error occurred during login.";
       }
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   async function register(data: {
@@ -107,12 +110,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError("");
 
     try {
-      const response = await apiRegister(data);
-      const responseData = JSON.parse(response);
-      const token = responseData.data.token;
+      const token = await apiRegister(data);
       localStorage.setItem("token", token);
-      const user = await getProfile();
-      setUser(user);
+      // const user = await getProfile();
+      // setUser(user);
     } catch (error: any) {
       if (error.response) {
         setError(error.response.data);
