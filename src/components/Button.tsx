@@ -1,6 +1,6 @@
 type ButtonProps = {
   children: React.ReactNode;
-  variant?: "primary" | "outline";
+  variant?: "primary" | "secondary" | "outline";
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export default function Button({
@@ -10,6 +10,7 @@ export default function Button({
 }: ButtonProps) {
   const variants = {
     primary: "bg-blue-500 hover:bg-blue-700 text-white",
+    secondary: "bg-red-500 hover:bg-red-700 text-white",
     outline: "bg-white hover:bg-gray-100 text-gray-800 border border-gray-400",
   };
 
