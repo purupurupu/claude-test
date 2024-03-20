@@ -15,7 +15,7 @@ type UserCardProps = {
 
 export default function UserCard({ user, onLike, onDislike }: UserCardProps) {
   return (
-    <div className="bg-white shadow-md rounded-lg p-4">
+    <div className="bg-white shadow-md rounded-lg p-4 text-black">
       <Image
         src={user.pictures[0]}
         alt={user.name}

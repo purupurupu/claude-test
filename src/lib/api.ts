@@ -117,7 +117,6 @@ export async function getProfile() {
     const userId = decodedToken.user_id;
 
     const response = await api.get<User>(`/users/${userId}`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error("Failed to fetch user profile.");
