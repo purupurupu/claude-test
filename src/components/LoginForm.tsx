@@ -40,12 +40,12 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
           </Button>
         </div>
       </form>
-      <p className="text-center mt-4">
+      <div className="text-center mt-4">
         Don&apos;t have an account?{" "}
         <Link href="/registration">
-          <p className="text-blue-500 hover:underline">Register</p>
+          <span className="text-blue-500 hover:underline">Register</span>
         </Link>
-      </p>
+      </div>
     </div>
   );
 }

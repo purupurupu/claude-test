@@ -83,7 +83,7 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
       <p className="text-center mt-4">
         Already have an account?{" "}
         <Link href="/login">
-          <p className="text-blue-500 hover:underline">Login</p>
+          <span className="text-blue-500 hover:underline">Login</span>
         </Link>
       </p>
     </div>
